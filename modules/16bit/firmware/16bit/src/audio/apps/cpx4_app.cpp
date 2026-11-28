@@ -63,12 +63,14 @@ uint32_t Cpx4App::nowMs() {
     return (uint32_t)(time_us_64() / 1000);
 }
 
-// P1..P4 = ADC0..3, read every 2 ms under the ADC lock IO uses, four
-// conversions averaged, then smoothed. A TUNE is set once its knob moves by
-// CPX4_KNOB_APPLY_STEP counts. A knob with a track (recording, playing or
-// gliding back) belongs to the recorder; it's still tracked for the
-// recorder, in whole counts with the same hysteresis, so a resting knob
-// can't flicker by a count in a take or its offset.
+// P1..P4 = ADC0..3, read every 2 ms under the ADC lock IO uses (one knob
+// at a time): a settling conversion, then cpx4_knob::CONVERSIONS for the
+// trimmed mean, smoothed, with backlash (cpx4_knob.h), so a resting knob
+// never re-tunes its voice and a turned one moves it continuously. A knob
+// with a track (recording, playing or gliding back) belongs to the
+// recorder; it's still tracked for the recorder, in whole counts of the
+// same position, so a resting knob can't flicker by a count in a take or
+// its offset.
 void Cpx4App::readKnobs() {
     uint32_t now = nowMs();
     if (!knobsFirstRead && (now - lastKnobReadMs) < CPX4_KNOB_READ_INTERVAL_MS) {
@@ -76,31 +78,41 @@ void Cpx4App::readKnobs() {
     }
     lastKnobReadMs = now;
 
-    uint32_t sum[MotionRecorder::KNOB_COUNT] = {};
-    audioManager->startAdcLock();
-    for (uint8_t k = 0; k < MotionRecorder::KNOB_COUNT; k++) {
-        adc_select_input(k);
-        for (uint8_t i = 0; i < CPX4_KNOB_OVERSAMPLE; i++) {
-            sum[k] += adc_read();
+    if (knobStatReset) {
+        knobStatReset = false;
+        for (uint8_t k = 0; k < MotionRecorder::KNOB_COUNT; k++) {
+            knobStatMin[k] = 1e9f;
+            knobStatMax[k] = -1e9f;
+            knobStatUpdates[k] = 0;
         }
     }
-    audioManager->endAdcLock();
 
     for (uint8_t k = 0; k < MotionRecorder::KNOB_COUNT; k++) {
-        float raw = sum[k] / (float)CPX4_KNOB_OVERSAMPLE;
+        uint16_t raw[cpx4_knob::CONVERSIONS];
+        audioManager->startAdcLock();
+        adc_select_input(k);
+        (void)adc_read();  // settles the sample cap after the input switch
+        for (uint8_t i = 0; i < cpx4_knob::CONVERSIONS; i++) {
+            raw[i] = adc_read();
+        }
+        audioManager->endAdcLock();
+
         if (knobsFirstRead) {
-            knobSmooth[k] = raw;
-        } else {
-            knobSmooth[k] += CPX4_KNOB_SMOOTH * (raw - knobSmooth[k]);
+            knobFilter[k].reset();
         }
-        if (knobsFirstRead || fabsf(knobSmooth[k] - knobCounts[k]) > CPX4_KNOB_APPLY_STEP) {
-            knobCounts[k] = (uint16_t)(knobSmooth[k] + 0.5f);
-        }
+        const float reading = cpx4_knob::trimmedMean(raw);
+        const float position = knobFilter[k].update(reading);
+        knobStatMin[k] = fminf(knobStatMin[k], reading);
+        knobStatMax[k] = fmaxf(knobStatMax[k], reading);
+        knobCounts[k] = (uint16_t)(position + 0.5f);
         if (recorder.ownsKnob(k)) {
             continue;
         }
-        if (knobsFirstRead || fabsf(knobSmooth[k] - knobApplied[k]) > CPX4_KNOB_APPLY_STEP) {
-            applyKnob(k, knobSmooth[k]);
+        // The position only changes when the knob turns (or the recorder
+        // has just handed the knob back).
+        if (knobsFirstRead || position != knobApplied[k]) {
+            applyKnob(k, position);
+            knobStatUpdates[k]++;
         }
     }
     knobsFirstRead = false;
@@ -186,8 +198,24 @@ void Cpx4App::applyRecorded(void* context, uint8_t param, uint16_t value) {
     }
 }
 
+// get-cpx4-knobs: per knob the position (ADC counts), the range of its
+// readings and its TUNE updates since the last query (bench checks: a
+// resting knob updates 0 times).
+void Cpx4App::printKnobStats() {
+    for (uint8_t k = 0; k < MotionRecorder::KNOB_COUNT; k++) {
+        printf("P%d position %.2f readings %.2f..%.2f updates %lu\n", k + 1,
+               knobFilter[k].getPosition(), knobStatMin[k], knobStatMax[k],
+               (unsigned long)knobStatUpdates[k]);
+    }
+    knobStatReset = true;
+}
+
 // get-cpx4-params: the live DSP state over serial (bench checks).
 bool Cpx4App::onCommandCallback(const char* cmd) {
+    if (strncmp(cmd, "get-cpx4-knobs", 14) == 0) {
+        printKnobStats();
+        return true;
+    }
     if (strncmp(cmd, "get-cpx4-params", 16) == 0) {
         printf("tune_hz %.2f %.2f %.2f %.2f transpose %d\n",
                dsp.getVoiceHz(0), dsp.getVoiceHz(1), dsp.getVoiceHz(2), dsp.getVoiceHz(3),

@@ -96,6 +96,12 @@ typedef struct {
 //   takes a short peak and a large slow one that fills while the compressor works.
 // - Each sample is one implicit step of that network, loop included: no delay in
 //   the feedback, stable at the fastest attack.
+// - Control: the audio gain cell follows the capacitor through a 0.1 ms low pass
+//   (its control bandwidth), and the audio waits 0.1 ms to line up with it. At the
+//   fastest attacks the capacitor snaps down within one waveform peak, a few
+//   samples, each time a peak rises above the held level; on a sustained sound
+//   with beats (a drone at a few dB of reduction) those snaps crackled. The
+//   detector still reads the capacitor itself, so the loop is unchanged.
 typedef struct {
     float thr_db;
     float fb;            // gain behind the threshold: ratio - 1
@@ -107,10 +113,17 @@ typedef struct {
     float chg;           // chg1 + chg2
     float inv_chg;
     float inv_lin;       // 1 / (1 + chg x ratio): the step above the knee
+    float cv_coef;       // the audio gain cell's control low pass, per sample
+    uint32_t dly;        // the audio's wait for it, samples (< MS_GLUE_DLY_SIZE)
 } ms_glue_coef_t;
+
+#define MS_GLUE_DLY_SIZE 16  // power of two
 
 typedef struct {
     float v1, v2;  // capacitor voltages, dB of gain reduction; v2 only charges in release A
+    float cv;      // gain reduction at the audio gain cell, dB
+    float dly[MS_GLUE_DLY_SIZE];
+    uint32_t dly_pos;
 } ms_glue_state_t;
 
 // Look-ahead peak limiter: sliding minimum of the wanted gain over the look-ahead,
@@ -256,7 +269,7 @@ void ms_dsp_set_coefs(ms_dsp_t *d, const ms_coefs_t *c);
 void ms_dsp_process(ms_dsp_t *d, const float *in_k, const float *in_m, float *out, int n);
 // Other thread: copy the meters and restart them.
 void ms_dsp_take_meters(ms_dsp_t *d, ms_meters_t *out);
-// Delay of the chain in samples (the two look-aheads).
+// Delay of the chain in samples (the two look-aheads, the glue's control wait).
 int ms_coefs_latency(const ms_coefs_t *c);
 
 // Coefficient helpers (used by ms_params.c and the tests).

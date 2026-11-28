@@ -1,0 +1,13 @@
+# The audio path runs from internal RAM, not from flash through the instruction
+# cache. The two cores share that cache: the protocol, printf and coefficient
+# maths on core 0 evict the chain's code, and the refills made audio blocks late.
+[mapping:master_audio]
+archive: libmain.a
+entries:
+    ms_dsp (noflash)
+
+[mapping:master_audio_i2s]
+archive: libesp_driver_i2s.a
+entries:
+    i2s_common:i2s_channel_read (noflash)
+    i2s_common:i2s_channel_write (noflash)

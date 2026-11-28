@@ -42,6 +42,8 @@ static const float glue_release_s[] = {0.1f, 0.2f, 0.4f, 0.6f, 0.8f, 1.2f};
 #define GLUE_AUTO_FAST_S 0.0428f
 #define GLUE_AUTO_SLOW_S 5.1f
 #define GLUE_AUTO_CAP_RATIO (0.47f / 6.8f)
+// The audio gain cell's control low pass and the audio's wait for it (ms_glue_coef_t).
+#define GLUE_CV_S 0.0001f
 
 // Limiter auto release (ms_lim_coef_t): fast stage, slow stage attack / release.
 #define LIM_AUTO_FAST_S 0.030f
@@ -180,6 +182,9 @@ static void glue_set(ms_glue_coef_t *c, float fs, float thr_db, float ratio, flo
     c->chg = c->chg1 + c->chg2;
     c->inv_chg = 1.0f / c->chg;
     c->inv_lin = 1.0f / (1.0f + c->chg * ratio);
+    c->cv_coef = ms_time_coef(fs, GLUE_CV_S);
+    int dly = (int)(fs * GLUE_CV_S + 0.5f);
+    c->dly = (uint32_t)(dly < 0 ? 0 : (dly > MS_GLUE_DLY_SIZE - 1 ? MS_GLUE_DLY_SIZE - 1 : dly));
 }
 
 static void lim_set(ms_lim_coef_t *c, float fs, bool on, float gain_db, float ceil_db, float rel_ms, bool auto_rel,

@@ -5,6 +5,7 @@
 //
 //   ./.build/host/sim_cpx4 --wav <dir>   # also write listening WAVs to <dir>
 
+#include <algorithm>
 #include <cmath>
 #include <complex>
 #include <cstdio>
@@ -15,6 +16,7 @@
 #include <vector>
 
 #include "audio/apps/cpx4/cpx4_controls.h"
+#include "audio/apps/cpx4/cpx4_knob.h"
 #include "audio/apps/motion_recorder.h"
 
 static int checks = 0;
@@ -311,6 +313,114 @@ static void testMccFirmwareContract() {
           lc::CC_FEEDBACK == lc::CC_DELAY_TIME + 1 && lc::CC_DELAY_MIX == lc::CC_DELAY_TIME + 2 &&
           lc::CC_CUTOFF == lc::CC_DELAY_TIME + 3, "knob CCs are CC_BASE + 0..3");
     printf("  MCC firmware: unit 1 sends CC20-23 + CC102, unit 2 CC27-30 + CC103, steps 0 / 64 / 127\n");
+}
+
+// --- TUNE knob filter (cpx4_knob.h, as Cpx4App::readKnobs) ----------------
+
+// A knob read as the app reads it: CONVERSIONS conversions of `volts`
+// (ADC counts) with Gaussian noise of `sigma` counts each, rounded; `stray`
+// conversions of a read replaced by full scale.
+struct KnobAdc {
+    uint32_t seed;
+    explicit KnobAdc(uint32_t s) : seed(s) {}
+    double gauss() {  // Box-Muller on an LCG
+        auto u = [this]() {
+            seed = seed * 1664525u + 1013904223u;
+            return ((seed >> 8) + 0.5) / 16777216.0;
+        };
+        return sqrt(-2.0 * log(u())) * cos(2.0 * M_PI * u());
+    }
+    float read(float counts, float sigma, int stray = 0) {
+        uint16_t v[cpx4_knob::CONVERSIONS];
+        for (int i = 0; i < cpx4_knob::CONVERSIONS; i++) {
+            double x = std::round(counts + sigma * gauss());
+            v[i] = (uint16_t)std::min(4095.0, std::max(0.0, x));
+        }
+        for (int i = 0; i < stray && i < cpx4_knob::CONVERSIONS; i++) v[i] = 4095;
+        return cpx4_knob::trimmedMean(v);
+    }
+};
+
+static void testKnobFilter() {
+    // Noise as measured on the board (2026-11-28, P1 / P2 / P3 at rest):
+    // single conversions +-3 counts; sigma 1.5 is that with margin.
+    const float sigma = 1.5f;
+    const int readsPerSecond = 500;  // CPX4_KNOB_READ_INTERVAL_MS 2
+
+    // At rest: once settled (after the first second) the position stays
+    // put, so a resting voice isn't re-tuned (at most a move or two a
+    // minute when the noise reaches the end of the play). The old filter
+    // (4 conversions, re-centred after every 0.75-count change) for
+    // comparison.
+    for (int k = 0; k < 4; k++) {
+        const float at = k < 2 ? 2700.3f + k * 0.37f : 2047.6f + k * 0.21f;
+        KnobAdc adc(11 + k);
+        cpx4_knob::KnobFilter f;
+        float last = f.update(adc.read(at, sigma));
+        int moves = 0;
+        float oldSmooth = at, oldApplied = at;
+        int oldMoves = 0;
+        for (int n = 1; n < 61 * readsPerSecond; n++) {
+            float p = f.update(adc.read(at, sigma));
+            if (n >= readsPerSecond && p != last) moves++;
+            last = p;
+            float sum = 0.0f;
+            for (int i = 0; i < 4; i++) sum += std::round(at + sigma * adc.gauss());
+            oldSmooth += 0.3f * (sum / 4.0f - oldSmooth);
+            if (n >= readsPerSecond && fabsf(oldSmooth - oldApplied) > 0.75f) {
+                oldApplied = oldSmooth;
+                oldMoves++;
+            }
+        }
+        CHECK(moves <= 2 && oldMoves > 100 && fabsf(last - at) < cpx4_knob::BACKLASH + 0.5f,
+              "knob %d at rest: %d TUNE updates in 60 s (old filter %d), at %.2f for %.2f", k, moves,
+              oldMoves, last, at);
+        if (k == 0) printf("  knob at rest, 60 s: %d TUNE updates (old filter %d)\n", moves, oldMoves);
+    }
+
+    // Stray conversions: a read with two full-scale conversions doesn't
+    // move a resting knob (trimmed mean).
+    {
+        KnobAdc adc(5);
+        cpx4_knob::KnobFilter f;
+        float p = 0.0f;
+        for (int n = 0; n < readsPerSecond; n++) p = f.update(adc.read(1000.0f, sigma));
+        float hit = f.update(adc.read(1000.0f, sigma, 2));
+        CHECK(hit == p, "stray conversions moved a resting knob: %.2f -> %.2f", p, hit);
+    }
+
+    // Slow turn (tuning a beat by ear, 10 counts a second): the position
+    // follows continuously, no step over 0.5 count (the old filter stepped
+    // by >= 0.75), and never more than the play + noise behind.
+    {
+        KnobAdc adc(7);
+        cpx4_knob::KnobFilter f;
+        float at = 2500.0f, last = f.update(adc.read(at, sigma));
+        float maxStep = 0.0f, maxLag = 0.0f;
+        for (int n = 0; n < 10 * readsPerSecond; n++) {
+            at += 10.0f / readsPerSecond;
+            float p = f.update(adc.read(at, sigma));
+            maxStep = std::max(maxStep, fabsf(p - last));
+            if (n > readsPerSecond) maxLag = std::max(maxLag, fabsf(at - p));
+            last = p;
+        }
+        CHECK(maxStep < 0.5f && maxLag < cpx4_knob::BACKLASH + 1.0f,
+              "slow turn: step %.3f lag %.2f", maxStep, maxLag);
+    }
+
+    // A fast turn (full P3 travel in 0.5 s) arrives within the play 0.1 s
+    // after the knob stops.
+    {
+        KnobAdc adc(9);
+        cpx4_knob::KnobFilter f;
+        float at = 16.0f, p = f.update(adc.read(at, sigma));
+        for (int n = 0; n < readsPerSecond / 2; n++) {
+            at += 4063.0f / (readsPerSecond / 2);
+            p = f.update(adc.read(at, sigma));
+        }
+        for (int n = 0; n < readsPerSecond / 10; n++) p = f.update(adc.read(at, sigma));
+        CHECK(fabsf(p - at) < cpx4_knob::BACKLASH + 1.0f, "fast turn: %.1f for %.1f", p, at);
+    }
 }
 
 static void testTune() {
@@ -1014,6 +1124,7 @@ int main(int argc, char** argv) {
     printf("cpx4 DSP host test\n");
     testControlMap();
     testMccFirmwareContract();
+    testKnobFilter();
     testTune();
     testVoiceMute();
     testSharp();
