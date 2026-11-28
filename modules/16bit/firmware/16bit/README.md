@@ -104,7 +104,7 @@ Each app owns what a frame (cpx4: a track) means:
 | sampler    | group A drive / highpass resonance | group A lowpass / highpass                            | FX1 `CC20..23`, FX2 `CC27..30`, FX3 `CC85..88`               |
 | fxrack     | not recorded (audio inputs)      | group A / group B lowpass                               | FX1 `CC20..23`, FX2 `CC27..30`, FX3 `CC85..88`               |
 | monosynth  | not used                         | attack / decay times                                    | Bank A: BODY, CHORUS, CUTOFF, RESONANCE                      |
-| cpx4      | TUNE 1 / TUNE 2                  | TUNE 3 / TUNE 4                                         | Bank A: SHARP A, SHARP B, MOD, DRIVE; Bank B: DELAY TIME, FEEDBACK, DELAY MIX, CUTOFF (button CCs 102 / 103 not recorded) |
+| cpx4      | TUNE 1 / TUNE 2                  | TUNE 3 / TUNE 4                                         | Bank A: SHARP A, SHARP B, DRIVE, MOD; Bank B: DELAY TIME, FEEDBACK, DELAY MIX, CUTOFF (button CCs 102 / 103 not recorded) |
 | polysynth  | wavetable select / position (P1 down: P2 = square -> saw -> tri -> sine; P1 up: Noise, P2 = brown -> pink -> white -> blue -> digital -> crackle) | amp-envelope attack (1..500 ms) / release (10..1000 ms) | Bank A: filter-env attack-release time, filter-env depth, resonance, cutoff; Banks B / C fold onto Bank A |
 
 While a polysynth take plays back, each frame updates all six voices'

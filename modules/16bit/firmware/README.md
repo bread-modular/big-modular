@@ -196,7 +196,7 @@ TOTAL FB: the post-drive mix back into the FM
 | | 1 | 2 | 3 | 4 | Button (3 LEDs) |
 |---|---|---|---|---|---|
 | 16bit knobs | P1 TUNE 1 | P2 TUNE 2 | P3 TUNE 3 | P4 TUNE 4 | MODE = motion recorder |
-| MCC-1 VOICE (CC20-23) | SHARP A | SHARP B | MOD | DRIVE | CC102 FM routing: PAIRS / LOOP / TOTAL FB |
+| MCC-1 VOICE (CC20-23) | SHARP A | SHARP B | DRIVE | MOD | CC102 FM routing: PAIRS / LOOP / TOTAL FB |
 | MCC-2 FX (CC27-30) | DELAY TIME | FEEDBACK | DELAY MIX | CUTOFF (0 = open) | CC103 RESONANCE: Off / Peak / Sing |
 
 - **TUNE 1..4**: one voice each. As on the Lyra-8, every voice covers the full

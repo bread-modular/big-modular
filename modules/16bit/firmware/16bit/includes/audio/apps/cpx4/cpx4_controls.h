@@ -4,7 +4,7 @@
 // test tools/sim_cpx4.cpp.
 //
 //   16bit knobs          P1 TUNE 1   P2 TUNE 2   P3 TUNE 3   P4 TUNE 4
-//   MCC-1 (Bank A)       CC20 SHARP A  CC21 SHARP B  CC22 MOD  CC23 DRIVE
+//   MCC-1 (Bank A)       CC20 SHARP A  CC21 SHARP B  CC22 DRIVE  CC23 MOD
 //                        button CC102: FM routing PAIRS / LOOP / TOTAL FB
 //   MCC-2 (Bank B)       CC27 DELAY TIME  CC28 FEEDBACK  CC29 DELAY MIX
 //                        CC30 CUTOFF (inverted: 0 = open, 127 = 55 Hz);
@@ -24,8 +24,8 @@ namespace cpx4_controls {
 
 constexpr uint8_t CC_SHARP_A = 20;
 constexpr uint8_t CC_SHARP_B = 21;
-constexpr uint8_t CC_MOD = 22;
-constexpr uint8_t CC_DRIVE = 23;
+constexpr uint8_t CC_DRIVE = 22;
+constexpr uint8_t CC_MOD = 23;  // knob 4, beside the FM routing button
 constexpr uint8_t CC_DELAY_TIME = 27;
 constexpr uint8_t CC_FEEDBACK = 28;
 constexpr uint8_t CC_DELAY_MIX = 29;
@@ -36,15 +36,15 @@ constexpr uint8_t CC_ALL_SOUND_OFF = 120;
 
 // The eight recorded MCC knobs, in recorder frame order (Bank A, Bank B).
 constexpr uint8_t RECORDED_CCS[8] = {
-    CC_SHARP_A, CC_SHARP_B, CC_MOD, CC_DRIVE,
+    CC_SHARP_A, CC_SHARP_B, CC_DRIVE, CC_MOD,
     CC_DELAY_TIME, CC_FEEDBACK, CC_DELAY_MIX, CC_CUTOFF};
 
 // Power-on values until the MCCs send theirs (they resend every second).
 constexpr uint8_t SEED_CC[8] = {
     24,   // SHARP A: a little rounder than a triangle's corners
     24,   // SHARP B
-    0,    // MOD: clean
     0,    // DRIVE: clean
+    0,    // MOD: clean
     64,   // DELAY TIME: 31 ms
     40,   // FEEDBACK
     32,   // DELAY MIX

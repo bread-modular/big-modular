@@ -307,7 +307,7 @@ static void testMccFirmwareContract() {
     CHECK(has(unit1), "MCC-1: CC20-23 + CC102");
     CHECK(has(unit2), "MCC-2: CC27-30 + CC103");
     CHECK(has("const uint8_t STEP_CC_VALUE[STEPS] = {0, 64, 127};"), "MCC step values");
-    CHECK(lc::CC_SHARP_B == lc::CC_SHARP_A + 1 && lc::CC_MOD == lc::CC_SHARP_A + 2 && lc::CC_DRIVE == lc::CC_SHARP_A + 3 &&
+    CHECK(lc::CC_SHARP_B == lc::CC_SHARP_A + 1 && lc::CC_DRIVE == lc::CC_SHARP_A + 2 && lc::CC_MOD == lc::CC_SHARP_A + 3 &&
           lc::CC_FEEDBACK == lc::CC_DELAY_TIME + 1 && lc::CC_DELAY_MIX == lc::CC_DELAY_TIME + 2 &&
           lc::CC_CUTOFF == lc::CC_DELAY_TIME + 3, "knob CCs are CC_BASE + 0..3");
     printf("  MCC firmware: unit 1 sends CC20-23 + CC102, unit 2 CC27-30 + CC103, steps 0 / 64 / 127\n");

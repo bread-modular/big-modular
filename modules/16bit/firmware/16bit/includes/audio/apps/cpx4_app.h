@@ -16,7 +16,7 @@
 //
 //   P1..P4      TUNE 1..4 (read here at 12 bits, smoothed; not through IO's
 //               50-count CV callbacks, too coarse for beating)
-//   MCC-1       CC20 SHARP A, CC21 SHARP B, CC22 MOD, CC23 DRIVE,
+//   MCC-1       CC20 SHARP A, CC21 SHARP B, CC22 DRIVE, CC23 MOD,
 //               button CC102 FM routing
 //   MCC-2       CC27 DELAY TIME, CC28 FEEDBACK, CC29 DELAY MIX, CC30 CUTOFF,
 //               button CC103 RESONANCE

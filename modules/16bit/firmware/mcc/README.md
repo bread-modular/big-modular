@@ -15,7 +15,7 @@ Custom firmware for the two MCC modules that play the 16bit `cpx4` app
 
 | Unit | Knobs 1-4 | Button (CC) | Steps 1 / 2 / 3 |
 |---|---|---|---|
-| `1` MCC-1 VOICE | CC20 SHARP A, CC21 SHARP B, CC22 MOD, CC23 DRIVE | CC102 FM routing | PAIRS / LOOP / TOTAL FB |
+| `1` MCC-1 VOICE | CC20 SHARP A, CC21 SHARP B, CC22 DRIVE, CC23 MOD | CC102 FM routing | PAIRS / LOOP / TOTAL FB |
 | `2` MCC-2 FX | CC27 DELAY TIME, CC28 FEEDBACK, CC29 DELAY MIX, CC30 CUTOFF | CC103 RESONANCE | Off / Peak / Sing |
 
 Everything else is the MCC firmware: knob n + CV n (the CV jacks add to the
