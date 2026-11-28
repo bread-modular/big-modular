@@ -61,7 +61,5 @@ sudo udevadm control --reload-rules && sudo udevadm trigger
 On Azero OS (`/etc/azero-release`, see `opt/azero-os.sh`) the OS rules cover the ST-Link (`0483`) and DAPLink
 (`0d28:0204`) probes: `flash.sh` never uses `sudo`, a probe it cannot open stops it with one line (replug,
 or ask the operator), and `setup.sh` installs no rule.
-Run the scripts as the checkout's owner (`azero` on Azero OS): any other user, root through `sudo`
-included, is refused before anything runs (`opt/checkout-owner.sh`). Flashing from the operator's
-SSH session: `azrun ./flash.sh ...` (until `azrun` is installed: `sudo -u azero -H bash -lc 'cd <dir>
-&& ./flash.sh ...'`), never `sudo ./flash.sh`.
+Run the scripts logged in as the checkout's owner (`azero` on Azero OS, e.g. `ssh azero@azero2.local`),
+never with `sudo`: any other user, root included, is refused before anything runs (`opt/checkout-owner.sh`).
