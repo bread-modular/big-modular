@@ -57,7 +57,5 @@ sudo udevadm control --reload-rules && sudo udevadm trigger
 On Azero OS (`/etc/azero-release`, see `opt/azero-os.sh`) the OS rules cover `4348:55e0` and the DFU IDs
 `1209:0002` / `1209:0004`: `flash.sh` never uses `sudo`, a device it cannot open stops it with one line
 (replug, or ask the operator), and `setup.sh` installs no rule.
-Run the scripts as the checkout's owner (`azero` on Azero OS): any other user, root through `sudo`
-included, is refused before anything runs (`opt/checkout-owner.sh`). Flashing from the operator's
-SSH session: `azrun ./flash.sh ...` (until `azrun` is installed: `sudo -u azero -H bash -lc 'cd <dir>
-&& ./flash.sh ...'`), never `sudo ./flash.sh`.
+Run the scripts logged in as the checkout's owner (`azero` on Azero OS, e.g. `ssh azero@azero2.local`),
+never with `sudo`: any other user, root included, is refused before anything runs (`opt/checkout-owner.sh`).
