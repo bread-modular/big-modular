@@ -12,6 +12,7 @@ set -euo pipefail
 
 TOOLS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$TOOLS_DIR/common.sh"
+source "$TOOLS_DIR/../azero-os.sh"
 
 if [[ -n "${1:-}" ]]; then
   IMAGE="$1"
@@ -31,8 +32,12 @@ case "$INTERFACE" in
   *) USB_VID=0483 ;;             # ST-Link
 esac
 
+# Never sudo on Azero OS: its udev rules cover the probe; a probe that is still
+# not accessible is reported in one line.
 SUDO=()
-if [[ "$(uname -s)" == Linux ]] && ! grep -qs "$USB_VID" /etc/udev/rules.d/*.rules /lib/udev/rules.d/*.rules; then
+if azero_os; then
+  azero_usb_access "$USB_VID" || exit 1
+elif [[ "$(uname -s)" == Linux ]] && ! grep -qs "$USB_VID" /etc/udev/rules.d/*.rules /lib/udev/rules.d/*.rules; then
   SUDO=(sudo)   # no udev rule for the probe (see setup.sh)
 fi
 

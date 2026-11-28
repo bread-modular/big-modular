@@ -14,6 +14,8 @@ set -euo pipefail
 TOOLS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=common.sh
 source "$TOOLS_DIR/common.sh"
+# shellcheck source=../azero-os.sh
+source "$TOOLS_DIR/../azero-os.sh"
 
 IDF_REPO="https://github.com/espressif/esp-idf.git"
 
@@ -60,7 +62,9 @@ fi
 )
 
 # --- 4. Serial port access (Linux) -------------------------------------------------
-if [[ "$(uname -s)" == Linux ]] && ! id -nG | tr ' ' '\n' | grep -qx dialout; then
+if azero_os; then
+  echo "==> Serial port access: provided by Azero OS (group uucp, udev rules), no group change"
+elif [[ "$(uname -s)" == Linux ]] && ! id -nG | tr ' ' '\n' | grep -qx dialout; then
   echo "Note: add yourself to 'dialout' to flash without sudo:" >&2
   echo "  sudo usermod -aG dialout \"\$USER\"   (then log out and back in)" >&2
 fi
