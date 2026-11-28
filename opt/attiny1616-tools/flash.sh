@@ -16,6 +16,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # A module wrapper may point at its firmware dir and add defines (KEY=VALUE,
 # space-separated), e.g. ATTINY_DEFINES="MIDI_HW_VERSION=2".
 TOOLS_DIR="$SCRIPT_DIR"
+# shellcheck source=../checkout-owner.sh
+source "$TOOLS_DIR/../checkout-owner.sh"
+require_checkout_owner "$@"
 SCRIPT_DIR="${ATTINY_SKETCH_ROOT:-$SCRIPT_DIR}"
 # arduino-cli: the OS package or the home install (common.sh: BIG_MODULAR_TOOLCHAINS).
 # shellcheck source=common.sh

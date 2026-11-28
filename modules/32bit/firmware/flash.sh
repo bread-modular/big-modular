@@ -12,5 +12,8 @@
 #
 set -euo pipefail
 
+source "$(dirname "${BASH_SOURCE[0]}")/../../../opt/checkout-owner.sh"
+require_checkout_owner "$@"
+
 ASK_FIRMWARE=1 source "$(dirname "${BASH_SOURCE[0]}")/jumper.sh" "${1:-}" "${2:-}"
 exec "$TOOLS_DIR/flash.sh" "${@:$((JUMPER_ARGC + 1))}"

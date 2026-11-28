@@ -14,6 +14,9 @@
 #
 set -euo pipefail
 
+source "$(dirname "${BASH_SOURCE[0]}")/../../../opt/checkout-owner.sh"
+require_checkout_owner "$@"
+
 FW_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [[ "${1:-}" == *.uf2 || "${1:-}" == info ]]; then
   export RP2350_PROJECT_ROOT="$FW_DIR/16bit" RP2350_TARGET=16bit

@@ -8,5 +8,8 @@
 #
 set -euo pipefail
 
+source "$(dirname "${BASH_SOURCE[0]}")/../../../opt/checkout-owner.sh"
+require_checkout_owner "$@"
+
 source "$(dirname "${BASH_SOURCE[0]}")/version.sh" "${1:-}"
 exec "$TOOLS_DIR/compile.sh"

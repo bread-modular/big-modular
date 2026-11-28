@@ -13,6 +13,9 @@
 #
 set -euo pipefail
 
+source "$(dirname "${BASH_SOURCE[0]}")/../../../opt/checkout-owner.sh"
+require_checkout_owner "$@"
+
 source "$(dirname "${BASH_SOURCE[0]}")/jumper.sh" "${1:-}" "${2:-}"
 export OPENOCD_INTERFACE="${OPENOCD_INTERFACE:-interface/cmsis-dap.cfg}"
 exec "$TOOLS_DIR/flash.sh"

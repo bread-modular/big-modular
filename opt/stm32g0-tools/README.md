@@ -24,6 +24,11 @@ or written. `BIG_MODULAR_TOOLCHAINS=home` restores the home lookup below
 `/opt/big-modular/stm32g0` (macOS, Ubuntu) the default is `home`, as before.
 Explicit tool variables win in both modes.
 
+make does not see a compiler change, so `compile.sh` records the GCC and CMSIS paths it built with in
+`<build>/.toolchain`; a build dir with another record (the other `BIG_MODULAR_TOOLCHAINS` mode: GCC
+16.2 vs 14.2) or with objects and no record is removed with one `==> Stale build dir ...` line and
+built fresh (`opt/build-dir.sh`); an unchanged one builds incrementally.
+
 Home lookup, pinned dependencies (first hit wins; `compile.sh` / `flash.sh` never download):
 
 | Tool | Version | Looked up in |
@@ -56,3 +61,7 @@ sudo udevadm control --reload-rules && sudo udevadm trigger
 On Azero OS (`/etc/azero-release`, see `opt/azero-os.sh`) the OS rules cover the ST-Link (`0483`) and DAPLink
 (`0d28:0204`) probes: `flash.sh` never uses `sudo`, a probe it cannot open stops it with one line (replug,
 or ask the operator), and `setup.sh` installs no rule.
+Run the scripts as the checkout's owner (`azero` on Azero OS): any other user, root through `sudo`
+included, is refused before anything runs (`opt/checkout-owner.sh`). Flashing from the operator's
+SSH session: `azrun ./flash.sh ...` (until `azrun` is installed: `sudo -u azero -H bash -lc 'cd <dir>
+&& ./flash.sh ...'`), never `sudo ./flash.sh`.

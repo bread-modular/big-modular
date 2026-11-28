@@ -9,6 +9,9 @@
 #
 set -euo pipefail
 
+source "$(dirname "${BASH_SOURCE[0]}")/../../../opt/checkout-owner.sh"
+require_checkout_owner "$@"
+
 FW_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SETTING="${1:-}"
 [[ -n "$SETTING" ]] || { echo "Usage: ./package.sh p|d [app ...]" >&2; exit 1; }

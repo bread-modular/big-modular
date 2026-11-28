@@ -36,6 +36,9 @@ die() {
   exit 1
 }
 
+# shellcheck source=../build-dir.sh
+source "$(dirname "${BASH_SOURCE[0]}")/../build-dir.sh"
+
 # Locate ESP-IDF: $IDF_PATH -> $IDF_DIR -> os: /opt/big-modular/esp32/esp-idf;
 # home: ~/esp/esp-idf -> ~/esp/esp-idf-<version>.
 find_idf() {
@@ -95,6 +98,34 @@ activate_idf() {
   source "$idf_dir/export.sh" >/dev/null || \
     die "ESP-IDF at $idf_dir did not activate. Run ./setup.sh."
   export IDF_TARGET
+}
+
+# Remove an idf.py build dir (default <project>/build) configured with another
+# ESP-IDF, Python environment, toolchain, cmake or ninja (BIG_MODULAR_TOOLCHAINS
+# os vs home, a moved install or checkout), one line with the reason: idf.py
+# would stop at "... Run 'idf.py fullclean' to start again." or build with the
+# cached tools. Call after activate_idf.
+check_idf_build_dir() { # project_dir [build_dir]
+  local proj="$1" build="${2:-$1/build}" cache ar gcc
+  cache="$build/CMakeCache.txt"
+  [[ -f "$cache" ]] || return 0
+  cmake_cache_expect "$cache" CMAKE_HOME_DIRECTORY "$proj" path
+  cmake_cache_expect "$cache" CMAKE_CACHEFILE_DIR "$build" path
+  cmake_cache_expect "$cache" esp-idf_SOURCE_DIR "$IDF_PATH" path
+  cmake_cache_expect "$cache" CMAKE_TOOLCHAIN_FILE "$IDF_PATH/tools/cmake/toolchain-$IDF_TARGET.cmake" path
+  cmake_cache_expect "$cache" IDF_TARGET "$IDF_TARGET"
+  # idf.py compares the plain strings (its own fullclean check).
+  cmake_cache_expect "$cache" PYTHON "$(python -c 'import sys; print(sys.executable)')"
+  if ar="$(cmake_cache_value "$cache" CMAKE_AR)" && [[ -n "$ar" ]]; then
+    gcc="$(basename "$ar")"
+    gcc="$(command -v "${gcc%-ar}-gcc" || echo "(no ${gcc%-ar}-gcc)")"
+    cmake_cache_expect "$cache" CMAKE_AR "$(dirname "$gcc")/$(basename "$ar")" path
+  fi
+  if [[ "$(cmake_cache_value "$cache" CMAKE_GENERATOR || true)" == Ninja ]]; then
+    cmake_cache_expect "$cache" CMAKE_MAKE_PROGRAM "$(command -v ninja || echo '(no ninja)')" path
+  fi
+  cmake_cache_expect "$cache" CMAKE_COMMAND "$(command -v cmake || echo '(no cmake)')" path
+  remove_build_dir_if_stale "$build" "$proj"
 }
 
 # Resolve the project dir and the idf.py -D arguments into PROJECT_DIR / IDF_DEFINE_ARGS.

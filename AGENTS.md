@@ -35,6 +35,11 @@ tooling.
   never a home copy earlier on the PATH, in any shell; `setup.sh` only checks.
   `BIG_MODULAR_TOOLCHAINS=home` is the fallback to the home installs (as before); machines
   without `/opt/big-modular` (macOS, Ubuntu) are unchanged. See the `opt/*-tools` READMEs.
+  A build dir made with other tools (the other mode, a moved install / checkout) is removed and
+  built fresh with one `==> Stale build dir` line (`opt/build-dir.sh`, 2026-11-28). The
+  compile / flash / package scripts refuse any user but the checkout's owner, root via `sudo`
+  included (`opt/checkout-owner.sh`); the operator's SSH session runs them with
+  `azrun ./flash.sh ...` (until it is installed: `sudo -u azero -H bash -lc 'cd <dir> && ...'`).
 - `mechanical/` — 3D-printed mechanics outside the KiCad modules, each folder with its
   own FreeCAD-headless `tools/`, ignored `research/` and print outputs: `mechanical/case/`
   (skiff case; `print/` is grouped as `side-panels/` (standard, four spacer sockets for bolt-on stand plates), `rails/`, `bottom-plate/`, `covers/`, `double-case/` (middle frame), `quad-case/` (flat 2 x 2 set with fused panels, also the angle joiner's upper element), `stands/angle-joiner/` + `stands/tiered-stand/`, and `accessories/top-brace/` + `accessories/cable-holder/` (clip-on patch cable comb) + `accessories/usb-riser/` (8HP collar that lifts modules/32bit 18 mm so its back USB-C plug passes over the back rail; CAD + slicer checked 2026-11-22, not printed); index in `print/README.md`, renders mirror it) and `mechanical/knobs/` (push-on
