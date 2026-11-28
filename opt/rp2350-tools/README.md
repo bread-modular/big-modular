@@ -57,6 +57,9 @@ echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="2e8a", MODE="0660", TAG+="uaccess"' | 
 sudo udevadm control --reload-rules && sudo udevadm trigger
 ```
 
+On Azero OS the OS ships this rule (`63-azero-flash.rules`, vendor `2e8a`, group `uucp`; serial ports
+are `uucp` too, not `dialout`): nothing to install, and no script here uses `sudo`.
+
 Without it, `flash.sh` reboots a running board into BOOTSEL through its serial
 port (1200 baud; needs the `dialout` group) and copies the UF2 onto the
 `RP2350` drive. A blank or crashed board: hold BOOT, tap RESET, release BOOT.

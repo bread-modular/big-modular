@@ -20,7 +20,8 @@ tools/longrun.py --minutes 60 --out ../research/longrun   # play 8 + record 6 ov
 USB IDs (pid.codes **test** PIDs, development only): firmware `1209:0003`, DFU bootloader
 `1209:0004`. modules/usb-audio uses `0001` / `0002`, so both modules can be on one host.
 Without udev rules for `4348:55e0` (ROM bootloader) and `1209:0004`, `flash.sh` runs
-`wchisp` / `dfu-util` through `sudo` (`opt/ch32v307-tools/README.md`).
+`wchisp` / `dfu-util` through `sudo` (`opt/ch32v307-tools/README.md`). On Azero OS the OS rules
+cover both and `flash.sh` never uses `sudo`; a device it cannot open is reported in one line.
 
 ## What the host sees
 

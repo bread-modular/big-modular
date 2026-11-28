@@ -48,3 +48,7 @@ echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="4348", ATTRS{idProduct}=="55e0", MODE=
   sudo tee /etc/udev/rules.d/99-wchisp.rules
 sudo udevadm control --reload-rules && sudo udevadm trigger
 ```
+
+On Azero OS (`/etc/azero-release`, see `opt/azero-os.sh`) the OS rules cover `4348:55e0` and the DFU IDs
+`1209:0002` / `1209:0004`: `flash.sh` never uses `sudo`, a device it cannot open stops it with one line
+(replug, or ask the operator), and `setup.sh` installs no rule.

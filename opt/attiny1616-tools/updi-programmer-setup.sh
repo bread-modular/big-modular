@@ -18,6 +18,10 @@
 # Finally it checks that the serial port can be opened by this user (Linux:
 # membership of the port's group, usually dialout).
 #
+# On Azero OS (opt/azero-os.sh) it never calls sudo: avrdude is an OS package and
+# the OS udev rules give the serial ports to the uucp group, so nothing is
+# installed and no group is changed; what is missing is reported.
+#
 # Safe to re-run (idempotent). No Homebrew required.
 #
 # Usage:
@@ -36,6 +40,18 @@ BOARD_NAME="Big Modular UPDI programmer"
 log()  { printf '==> %s\n' "$*"; }
 warn() { printf 'Warning: %s\n' "$*" >&2; }
 die()  { printf 'Error: %s\n' "$*" >&2; exit 1; }
+
+# Real location of this script (follow the symlink) — opt/attiny1616-tools/.
+SELF="${BASH_SOURCE[0]:-$0}"
+while [[ -L "$SELF" ]]; do
+  DIR="$(cd -P "$(dirname "$SELF")" && pwd)"
+  TARGET="$(readlink "$SELF")"
+  [[ "$TARGET" != /* ]] && TARGET="$DIR/$TARGET"
+  SELF="$TARGET"
+done
+TOOLS_DIR="$(cd -P "$(dirname "$SELF")" && pwd)"
+# shellcheck source=../azero-os.sh
+source "$TOOLS_DIR/../azero-os.sh"
 
 usage() {
   cat <<'EOF'
@@ -103,7 +119,7 @@ usable_avrdude() {
 as_root() {
   if [[ "$(id -u)" -eq 0 ]]; then
     "$@"
-  elif command -v sudo >/dev/null 2>&1; then
+  elif ! azero_os && command -v sudo >/dev/null 2>&1; then
     sudo "$@"
   else
     die "root privileges are needed to run: $*"
@@ -265,6 +281,7 @@ install_avrdude() {
 check_serial_access() {
   local dev grp
   dev="$PORT_DEFAULT"
+  ! azero_os || log "Serial port access: provided by Azero OS (group uucp, udev rules), no group change"
   if [[ ! -e "$dev" ]]; then
     log "No serial port at $dev right now (plug the UPDI adapter in later; flash.sh lists the ports)"
     return 0
@@ -274,6 +291,10 @@ check_serial_access() {
     return 0
   fi
 
+  if azero_os; then
+    warn "this user cannot open $dev; the Azero OS udev rules give serial ports to the uucp group (no group change here): replug the adapter, or ask the operator"
+    return 1
+  fi
   warn "this user cannot open $dev"
   [[ "$(uname -s)" == Linux ]] || return 1
   grp="$(stat -c '%G' "$dev" 2>/dev/null || printf 'dialout\n')"
@@ -307,6 +328,7 @@ main() {
       check_serial_access || true
       exit 1
     fi
+    ! azero_os || die "no avrdude with jtag2updi support found; on Azero OS avrdude is an OS package (nothing is installed here, no sudo): ask the operator"
     log "No usable avrdude found — installing one"
     if ! install_avrdude; then
       die "could not provide an avrdude with jtag2updi support"

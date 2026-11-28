@@ -52,3 +52,7 @@ echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="0483", MODE="0660", TAG+="uaccess"' | 
   sudo tee /etc/udev/rules.d/99-stlink.rules
 sudo udevadm control --reload-rules && sudo udevadm trigger
 ```
+
+On Azero OS (`/etc/azero-release`, see `opt/azero-os.sh`) the OS rules cover the ST-Link (`0483`) and DAPLink
+(`0d28:0204`) probes: `flash.sh` never uses `sudo`, a probe it cannot open stops it with one line (replug,
+or ask the operator), and `setup.sh` installs no rule.

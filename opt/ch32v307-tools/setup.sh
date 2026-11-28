@@ -11,6 +11,7 @@
 set -euo pipefail
 
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/../azero-os.sh"
 
 # os: report a missing piece instead of downloading it.
 os_missing() {
@@ -91,7 +92,9 @@ else
   echo "wchisp: $(find_wchisp)"
 fi
 
-if [[ "$(uname -s)" == Linux ]] && ! grep -qs 4348 /etc/udev/rules.d/*.rules; then
+if azero_os; then
+  echo "udev rules: provided by Azero OS (4348:55e0 ROM bootloader, 1209:0002 / 1209:0004 DFU), nothing to install"
+elif [[ "$(uname -s)" == Linux ]] && ! grep -qs 4348 /etc/udev/rules.d/*.rules; then
   cat <<'EOF'
 
 Note: no udev rule for the WCH bootloader (4348:55e0), so wchisp needs sudo.

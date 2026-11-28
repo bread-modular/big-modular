@@ -19,6 +19,7 @@ set -euo pipefail
 
 TOOLS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$TOOLS_DIR/common.sh"
+source "$TOOLS_DIR/../azero-os.sh"
 
 MODE=rom
 if [[ "${1:-}" == --dfu ]]; then
@@ -52,10 +53,11 @@ wait_usb() { # vid:pid seconds
   return 1
 }
 
-# sudo unless a udev rule grants access to vid:pid.
+# sudo unless a udev rule grants access to vid:pid. Never on Azero OS: its rules
+# do, and azero_usb_access reports a device that is still not accessible.
 sudo_for() {
   local vid="${1%%:*}" pid="${1##*:}"
-  if [[ "$(uname -s)" == Linux ]] && \
+  if ! azero_os && [[ "$(uname -s)" == Linux ]] && \
      ! grep -qsiE "idVendor[^,]*\"$vid\".*idProduct[^,]*\"$pid\"" /etc/udev/rules.d/*.rules; then
     echo sudo
   fi
@@ -80,7 +82,7 @@ if [[ "$MODE" == rom ]]; then
   WCHISP="$(find_wchisp)" || die "wchisp not found. Run ./setup.sh first.$(os_hint)"
   echo "==> wchisp: $WCHISP"
   SUDO=()
-  if [[ "$(uname -s)" == Linux ]] && ! grep -qs 4348 /etc/udev/rules.d/*.rules; then
+  if ! azero_os && [[ "$(uname -s)" == Linux ]] && ! grep -qs 4348 /etc/udev/rules.d/*.rules; then
     SUDO=(sudo)   # no udev rule for the bootloader (see setup.sh)
   fi
 
@@ -91,6 +93,7 @@ if [[ "$MODE" == rom ]]; then
     sleep 1   # let it finish enumerating
   fi
 
+  azero_usb_access 4348:55e0 || exit 1
   "${SUDO[@]}" "$WCHISP" info
   "${SUDO[@]}" "$WCHISP" flash "$BIN"
   exit 0
@@ -126,6 +129,7 @@ if ! on_usb "$CH32_DFU_ID"; then
   sleep 1
 fi
 
+azero_usb_access "$CH32_DFU_ID" || exit 1
 $(sudo_for "$CH32_DFU_ID") "$DFU_UTIL" -d "$CH32_DFU_ID" -a 0 -D "$BIN"
 
 if [[ -n "${CH32_APP_ID:-}" ]]; then

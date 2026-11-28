@@ -14,6 +14,7 @@
 set -euo pipefail
 
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/../azero-os.sh"
 
 # os: report a missing piece instead of downloading it.
 os_missing() {
@@ -87,7 +88,9 @@ else
   echo "openocd: $(find_openocd)"
 fi
 
-if [[ "$(uname -s)" == Linux ]] && ! grep -qs 0483 /etc/udev/rules.d/*.rules /lib/udev/rules.d/*.rules; then
+if azero_os; then
+  echo "udev rules: provided by Azero OS (ST-Link 0483, DAPLink 0d28:0204), nothing to install"
+elif [[ "$(uname -s)" == Linux ]] && ! grep -qs 0483 /etc/udev/rules.d/*.rules /lib/udev/rules.d/*.rules; then
   cat <<'NOTE'
 
 Note: no udev rule for ST-Link probes (0483:*), so openocd may need sudo.
