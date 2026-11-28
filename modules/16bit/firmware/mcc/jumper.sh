@@ -44,7 +44,7 @@ esac
 UNIT="${2:-${UNIT:-}}"
 if [[ -z "$UNIT" ]]; then
   echo "==> Select the MCC unit:"
-  echo "  1) MCC-1 VOICE (SHARP A, SHARP B, MOD, DRIVE; button = FM routing)"
+  echo "  1) MCC-1 VOICE (SHARP A, SHARP B, DRIVE, MOD; button = FM routing)"
   echo "  2) MCC-2 FX    (DELAY TIME, FEEDBACK, DELAY MIX, CUTOFF; button = RESONANCE)"
   while true; do
     printf "Enter number (1-2): "

@@ -8,7 +8,7 @@
 // 3-step selector that sends its own CC. SimpleMIDI.h and ModeHandler.h are
 // the MCC firmware's files (symlinks); ModeHandler keeps the step in EEPROM.
 //
-//   MCC_UNIT=1  "VOICE": knobs CC20-23 (SHARP A, SHARP B, MOD, DRIVE),
+//   MCC_UNIT=1  "VOICE": knobs CC20-23 (SHARP A, SHARP B, DRIVE, MOD),
 //               button CC102 = FM routing PAIRS / LOOP / TOTAL FB
 //   MCC_UNIT=2  "FX":    knobs CC27-30 (DELAY TIME, FEEDBACK, DELAY MIX,
 //               CUTOFF), button CC103 = RESONANCE Off / Peak / Sing
