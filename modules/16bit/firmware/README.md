@@ -355,6 +355,12 @@ the tools are already installed (`~/.breadmodular` from the BM scripts,
 `~/.pico-sdk`, or the PATH); only a machine without them gets the BM install,
 see `opt/rp2350-tools/README.md` (also the Linux udev rule picotool needs).
 
+Run these scripts (and `mcc/`) as the checkout's owner (`azero` on Azero OS):
+any other user, root through `sudo` included, is refused before anything runs
+(`opt/checkout-owner.sh`). Flashing from the operator's SSH session:
+`azrun ./flash.sh ...` (until `azrun` is installed:
+`sudo -u azero -H bash -lc 'cd <dir> && ./flash.sh ...'`), never `sudo ./flash.sh`.
+
 No buttons for a running board: `picotool load -f` reboots it into BOOTSEL; if
 picotool can't reach it (Linux without the udev rule), `flash.sh` opens its USB
 serial port at 1200 baud, which reboots it into BOOTSEL, and copies the UF2 onto

@@ -22,6 +22,7 @@ make -s -C "$HERE/.." ms_render
 "$PYTHON" -B "$HERE/audio.py" prepare --out "$OUT" --header "$HERE/main/audio_in.h"
 
 activate_idf
+check_idf_build_dir "$HERE" "$HERE/build-audio"
 command -v qemu-system-xtensa >/dev/null || die "qemu-system-xtensa not on PATH (see the header of run.sh)"
 
 cd "$HERE"

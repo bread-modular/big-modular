@@ -24,6 +24,9 @@
 set -euo pipefail
 
 TOOLS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=../checkout-owner.sh
+source "$TOOLS_DIR/../checkout-owner.sh"
+require_checkout_owner "$@"
 # shellcheck source=common.sh
 source "$TOOLS_DIR/common.sh"
 

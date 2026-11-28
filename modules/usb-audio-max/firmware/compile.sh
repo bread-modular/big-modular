@@ -7,6 +7,9 @@
 #
 set -euo pipefail
 
+source "$(dirname "${BASH_SOURCE[0]}")/../../../opt/checkout-owner.sh"
+require_checkout_owner "$@"
+
 FW_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TOOLS="$FW_DIR/../../../opt/ch32v307-tools"
 CH32_PROJECT_ROOT="$FW_DIR/bootloader" CH32_TARGET=bootloader "$TOOLS/compile.sh" "$@"

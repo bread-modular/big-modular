@@ -13,6 +13,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null
 source "$HERE/../../../../../../opt/esp32-tools/common.sh"
 activate_idf
+check_idf_build_dir "$HERE" "$HERE/build"
 command -v qemu-system-xtensa >/dev/null || die "qemu-system-xtensa not on PATH (see the header of this script)"
 
 cd "$HERE"

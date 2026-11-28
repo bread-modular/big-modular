@@ -42,6 +42,9 @@ while [[ -L "$SELF" ]]; do
   SELF="$TARGET"
 done
 TOOLS_DIR="$(cd -P "$(dirname "$SELF")" && pwd)"
+# shellcheck source=../checkout-owner.sh
+source "$TOOLS_DIR/../checkout-owner.sh"
+require_checkout_owner "$@"
 
 HEX_BASENAME="jtag2updi_t1616.hex"
 # Where the firmware image may live, in order of preference.

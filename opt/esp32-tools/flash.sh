@@ -12,6 +12,9 @@
 set -euo pipefail
 
 TOOLS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=../checkout-owner.sh
+source "$TOOLS_DIR/../checkout-owner.sh"
+require_checkout_owner "$@"
 # shellcheck source=common.sh
 source "$TOOLS_DIR/common.sh"
 
@@ -70,6 +73,7 @@ if [[ -z "$PORT" ]]; then
 fi
 
 activate_idf
+check_idf_build_dir "$PROJECT_DIR"
 
 echo "==> Building & flashing $PROJECT_DIR (port: $PORT${ESP32_DEFINES:+, $ESP32_DEFINES})"
 cd "$PROJECT_DIR"

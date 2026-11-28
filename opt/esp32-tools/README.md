@@ -28,3 +28,14 @@ or written. `BIG_MODULAR_TOOLCHAINS=home` restores the home lookup below
 (`/opt/big-modular` values exported by `/etc/profile.d` are ignored). Without
 `/opt/big-modular/esp32` (macOS, Ubuntu) the default is `home`, as before.
 Explicit tool variables win in both modes.
+
+`compile.sh` / `flash.sh` check `build/CMakeCache.txt` first: one configured with another ESP-IDF,
+Python environment, toolchain, cmake or ninja (the other `BIG_MODULAR_TOOLCHAINS` mode, a moved
+install or checkout; idf.py itself stops at "Run 'idf.py fullclean' to start again") is removed with
+one `==> Stale build dir ...` line and built fresh (`opt/build-dir.sh`); an unchanged one builds
+incrementally.
+
+Run the scripts as the checkout's owner (`azero` on Azero OS): any other user, root through `sudo`
+included, is refused before anything runs (`opt/checkout-owner.sh`). Flashing from the operator's
+SSH session: `azrun ./flash.sh ...` (until `azrun` is installed: `sudo -u azero -H bash -lc 'cd <dir>
+&& ./flash.sh ...'`), never `sudo ./flash.sh`.

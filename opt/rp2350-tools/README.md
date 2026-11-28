@@ -25,6 +25,11 @@ or written. `BIG_MODULAR_TOOLCHAINS=home` restores the home lookup below
 `/opt/big-modular/rp2350` (macOS, Ubuntu) the default is `home`, as before.
 Explicit tool variables win in both modes.
 
+`compile.sh` checks the build dir's `CMakeCache.txt` first: one configured with other tools (the
+other `BIG_MODULAR_TOOLCHAINS` mode, a moved SDK / toolchain / checkout: SDK path, compiler, generator,
+ninja, cmake, source dir) is removed with one `==> Stale build dir ...` line and configured fresh
+(`opt/build-dir.sh`); an unchanged one builds incrementally (`APP_NAME` / defines reconfigure in place).
+
 Home tool lookup (first hit wins, nothing is downloaded by `compile.sh` / `flash.sh`):
 
 | Tool | Version | Looked up in |
@@ -59,6 +64,10 @@ sudo udevadm control --reload-rules && sudo udevadm trigger
 
 On Azero OS the OS ships this rule (`63-azero-flash.rules`, vendor `2e8a`, group `uucp`; serial ports
 are `uucp` too, not `dialout`): nothing to install, and no script here uses `sudo`.
+Run the scripts as the checkout's owner (`azero` on Azero OS): any other user, root through `sudo`
+included, is refused before anything runs (`opt/checkout-owner.sh`). Flashing from the operator's
+SSH session: `azrun ./flash.sh ...` (until `azrun` is installed: `sudo -u azero -H bash -lc 'cd <dir>
+&& ./flash.sh ...'`), never `sudo ./flash.sh`.
 
 Without it, `flash.sh` reboots a running board into BOOTSEL through its serial
 port (1200 baud; needs the `dialout` group) and copies the UF2 onto the
